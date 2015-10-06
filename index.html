@@ -4,18 +4,18 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Line numbers for example code</title>
+    <title>Drupal 8: Service Containers & Services</title>
 
-		<meta name="description" content="Line numbers for example code.">
-		<meta name="author" content="Michael Miles">
+    <meta name="description" content="Drupal 8 Service Containers & Services">
+    <meta name="author" content="Mike Miles">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -41,43 +41,230 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
         <section>
+          <h1>Drupal 8</h1><h2>Service Containers & Services</h2>
+          <p>
+            <small>Created by <a href="http://mike-miles.com">Mike Miles</a> / <a href="http://twitter.com/mikemiles86">@mikemiles86</a></small>
+          </p>
+        </section>
+        <section>
           <section>
-            <h1>Line Numbers</h1><h2>Adding them to Example Code</h2>
+            <h2>What Are Service Containers?</h2>
+            <br />
+            <p class="fragment">
+              <span style="font-style:oblique;">"Service containers (or <span class="fragment highlight-blue grow">dependency injection</span> containers) are PHP objects that manages the instantiation of <span class="fragment highlight-blue grow">services</span>."</span>
+              <br />
+             <span style="font-size:50%"><a href="https://www.drupal.org/node/2133171" target="_blank">d.o/node/2133171</a></span>
+            </p>
           </section>
-          <section data-transition="convex">
-            <h2>Example code</h2><h3> with class "line-numbers"</h3>
-            <pre><code class="php line-numbers">
-/**
- * Example Code.
- */
-function my_example_code($line_numbers = TRUE) {
-  $message = 'This example code does';
-  $message .= ($line_numbers ? '' : ' not');
-  $message .= ' have line numbers.';
-
-  return $message;
-}
-
-print my_example_code(TRUE);
-            </code></pre>
         </section>
-          <section data-transition="convex">
-            <h2>Example code</h2><h3>with no line numbers</h3>
-            <pre><code class="php">
-/**
- * Example Code.
- */
-function my_example_code($line_numbers = TRUE) {
-  $message = 'This example code does';
-  $message .= ($line_numbers ? '' : ' not');
-  $message .= ' have line numbers.';
+          <section>
+            <section>
+              <h2>Dependency Injection</h2>
+              <p class="fragment">
+                <span style="font-style:oblique">A development pattern for decoupling objects.</span>
+              </p>
+            </section>
+            <section>
+              <pre><code class="php line-numbers" data-trim>
+&lt;?php
+  class Car {
+    protected $engine;
 
-  return $message;
+    public function __construct() {
+      $this->engine = new Engine();
+    }
+  }
+
+  $my_car = new Car();
+              </code></pre>
+            </section>
+            <section>
+              <pre><code class="php line-numbers" data-trim>
+&lt;?php
+  class Car {
+    protected $engine;
+
+    public function __construct($engine) {
+      $this->engine = $engine;
+    }
+  }
+
+  $my_engine = new Engine();
+  $my_car = new Car($my_engine);
+              </code></pre>
+            </section>
+            <section>
+              <pre><code class="php line-numbers" data-trim>
+&lt;?php
+  class Car {
+    protected $engine;
+
+    public function __construct($engine) {
+      $this->engine = $engine;
+    }
+  }
+
+  $my_diesel_engine = new DieselEngine();
+  $my_car = new Car($my_diesel_engine);
+              </code></pre>
+            </section>
+          </section>
+          <section>
+            <section>
+            <h2>Service Containers in Drupal 8</h2>
+              <ul>
+                <li class="fragment">Handles instantiating services</li>
+                <li class="fragment">Handles dependencies for services</li>
+                <li class="fragment">Defined by YML files</li>
+              </ul>
+            </section>
+            <section>
+              <h3>Path Alias Manager Service Containter</h3>
+              <pre><code class="line-numbers" data-trim>
+                ...
+path.alias_manager:
+  class: Drupal\Core\Path\AliasManager
+  arguments: ['@path.alias_storage', '@path.alias_whitelist',
+    '@language_manager', '@cache.data']
+...
+              </code><span class="filename">core\core.services.yml</span></pre>
+            </section>
+            <section>
+              <h3>Path Alias Manager Service</h3>
+              <pre><code class="php line-numbers" data-trim>
+&lt;?php
+namespace Drupal\Core\Path;
+//...
+class AliasManager ... {
+// ...
+
+  public function __construct(AliasStorageInterface $storage,
+    AliasWhitelistInterface $whitelist, LanguageManagerInterface
+    $language_manager, CacheBackendInterface $cache) {
+      $this->storage = $storage;
+      $this->languageManager = $language_manager;
+      $this->whitelist = $whitelist;
+      $this->cache = $cache;
+  }
+//...
+              </code><span class="filename">core\lib\Drupal\Core\Path\AliasManager.php</span></pre>
+            </section>
+          </section>
+          <section>
+            <section>
+              <h2>Services</h2>
+              <p class="fragment">
+                <span style="font-style:oblique">"A PHP object that performs some sort of "global" task."</span>
+                <br />
+                <span style="font-size:50%"><a href="http://symfony.com/doc/current/book/service_container.html" target="_blank">http://symfony.com/doc/current/book/service_container.html</a></span>
+              </p>
+            </section>
+            <section>
+                <h3>Services in Drupal 8</h3>
+                <ul>
+                  <li class="fragment">Database Service</li>
+                  <li class="fragment">Twig Service</li>
+                  <li class="fragment">Module Handler Service</li>
+                  <li class="fragment">Menu Service</li>
+                  <li class="fragment">...ect</li>
+                </ul>
+                <br />
+                <a class="fragment" href="https://api.drupal.org/api/drupal/core%21core.services.yml/8" target="_blank">core.services.yml</a>
+            </section>
+            <section>
+              <h3>Module Handler Service</h3>
+              <span class="fragment" style="font-size:50%">Drupal 7</span>
+              <pre class="fragment"><code class="php line-numbers" data-trim>
+&lt;php
+// ...
+module_invoke_all('help');
+// ...
+              </code></pre>
+              <br />
+              <span class="fragment" style="font-size:50%">Drupal 8</span>
+              <pre class="fragment"><code class="php line-numbers" data-trim>
+&lt;php
+// ...
+\Drupal::moduleHandler()->invokeAll('help');
+// ...
+              </code></pre>
+            </section>
+          </section>
+          <section>
+            <section>
+              <h3>Alter existing services</h3>
+              <pre class="fragment"><code class="php line-numbers" data-trim>
+&lt;?php
+
+namespace Drupal\my_module;
+
+use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\DependencyInjection\ServiceProviderBase;
+
+class MyModuleServiceProvider extends ServiceProviderBase {
+
+  public function alter(ContainerBuilder $container) {
+    // Overrides language_manager class to test
+    // domain language negotiation.
+    $definition = $container->getDefinition('language_manager');
+    $definition->setClass('Drupal\language_test\LanguageTestManager');
+  }
 }
+?>
+              </code><span class="filename">MyModule\src\MyModuleServiceProvider.php</span></pre>
+              <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
+            </section>
+            <section>
+              <h3>Replace existing services</h3>
+              <pre class="fragment"><code class="php line-numbers" data-trim>
+&lt;?php
 
-print my_example_code(FALSE);
-            </code></pre>
-        </section>
+namespace Drupal\my_module;
+
+use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\DependencyInjection\ServiceProviderBase;
+
+class MyModuleServiceProvider extends ServiceProviderBase {
+
+  public function alter(ContainerBuilder $container) {
+    // Overrides language_manager class to test
+    // domain language negotiation.
+    $definition = $container->getDefinition('language_manager');
+    $definition->setClass('Drupal\my_module\MyLanguageManager');
+  }
+}
+?>
+              </code><span class="filename">my_module\src\MyModuleServicePorvider.php</span></pre>
+              <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
+            </section>
+            <section>
+              <h3>Create New Services</h3>
+              <pre><code class="line-numbers" data-trim>
+services:
+    mymodule.car_service:
+        class: Drupal\my_module\Car
+        arguments: ['@mymodule.engine']
+    mymodule.engine_service:
+        class: Drupal\my_module\Engine
+...
+              </code><span class="filename">my_module\my_module.services.yml</span></pre>
+              <pre class="fragment"><code class="php line-numbers" data-trim>
+&lt;?php
+// ...
+$service = \Drupal::service('mymodule.car_service');
+</code></pre>
+            </section>
+          </section>
+          <section data-background="#15a8f3">
+              <h2>November Drupal Meetup</h2>
+              <p class="fragment"><strong>When:</strong>Tuesday November 3rd, 2015</p>
+              <p class="fragment">
+                <img style="border:0;width:600px;box-shadow:0;background:0;" data-src="images/genuine_logo_white.png" />
+                <br />
+                <strong>Where:</strong> 500 Harrison 5R Ave Boston MA 02118
+              </p>
+              </p>
+          </section>
 			</div>
 		</div>
 
