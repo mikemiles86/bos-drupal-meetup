@@ -67,45 +67,61 @@
             <section>
               <pre><code class="php line-numbers" data-trim>
 &lt;?php
-  class Car {
-    protected $engine;
+class Car {
+  protected $engine;
 
-    public function __construct() {
-      $this->engine = new Engine();
-    }
+  public function __construct() {
+    $this->engine = new Engine();
   }
+}
 
-  $my_car = new Car();
+class Engine {
+  // ...
+}
+
+$my_car = new Car();
               </code></pre>
             </section>
             <section>
               <pre><code class="php line-numbers" data-trim>
 &lt;?php
-  class Car {
-    protected $engine;
+class Car {
+  protected $engine;
 
-    public function __construct($engine) {
-      $this->engine = $engine;
-    }
+  public function __construct(Engine $engine) {
+    $this->engine = $engine;
   }
+}
 
-  $my_engine = new Engine();
-  $my_car = new Car($my_engine);
+class Engine {
+// ...
+}
+
+$my_engine = new Engine();
+$my_car = new Car($my_engine);
               </code></pre>
             </section>
             <section>
               <pre><code class="php line-numbers" data-trim>
 &lt;?php
-  class Car {
-    protected $engine;
+class Car {
+  protected $engine;
 
-    public function __construct($engine) {
-      $this->engine = $engine;
-    }
+  public function __construct(Engine $engine) {
+    $this->engine = $engine;
   }
+}
 
-  $my_diesel_engine = new DieselEngine();
-  $my_car = new Car($my_diesel_engine);
+class Engine {
+// ...
+}
+
+class DieselEngine extends Engine {
+  // ...
+}
+
+$my_diesel_engine = new DieselEngine();
+$my_car = new Car($my_diesel_engine);
               </code></pre>
             </section>
           </section>
