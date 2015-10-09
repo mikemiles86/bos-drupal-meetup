@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/basic.css" id="theme">
+    <link rel="stylesheet" href="css/theme/night.css" id="theme">
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -66,6 +66,7 @@
               </p>
             </section>
             <section>
+              <h3>Ex. Non-dependency injection</h3>
               <pre><code class="php line-numbers" data-trim>
 &lt;?php
 class Car {
@@ -79,92 +80,136 @@ class Car {
 class Engine {
   // ...
 }
-
-$my_car = new Car();
               </code></pre>
+              <span class="caption">The Car class is dependent on the Engine class. They are strongly coupled.</span>
+              <div class="fragment">
+                <pre><code class="php" data-trim>
+                    $my_delorean = new Car();
+                </code></pre>
+                <span class="caption">Only need to instantiate Car, which will instantiate Engine.</span>
+              </div>
             </section>
             <section>
+              <h3>What if a Different Engine?</h3>
               <pre><code class="php line-numbers" data-trim>
 &lt;?php
-class Car {
-  protected $engine;
-
-  public function __construct(Engine $engine) {
-    $this->engine = $engine;
-  }
-}
-
 class Engine {
 // ...
 }
 
-$my_engine = new Engine();
-$my_car = new Car($my_engine);
-              </code></pre>
-            </section>
-            <section>
-              <pre><code class="php line-numbers" data-trim>
-&lt;?php
-class Car {
-  protected $engine;
-
-  public function __construct(Engine $engine) {
-    $this->engine = $engine;
-  }
-}
-
-class Engine {
-// ...
-}
-
-class DieselEngine extends Engine {
+class FluxCapacitor extends Engine {
   // ...
 }
-
-$my_diesel_engine = new DieselEngine();
-$my_car = new Car($my_diesel_engine);
               </code></pre>
+              <span class="caption">Without dependency injection, what happens when want to use a different engine?</span>
+              <div class="fragment">
+                <pre><code class="php line-numbers" data-trim>
+                  &lt;?php
+class Car {
+  protected $engine;
+
+  public function __construct($time_travel= FALSE) {
+    $this->engine = $time_travel ? new FluxCapacitor() : new Engine();
+  }
+}
+                </code></pre>
+                <span class="caption">Would need to rewrite class Car to support new engine type. Adds complexity and additional dependencies.</span>
+              </div>
+              <pre class="fragment"><code class="php" data-trim>
+$my_delorean = new Car(FALSE);
+$my_time_machine = new Car(TRUE);
+              </code></pre>
+            </section>
+            <section>
+              <h3>Ex. Dependency Injection</h3>
+              <pre><code class="php line-numbers" data-trim>
+&lt;?php
+class Car {
+  protected $engine;
+
+  public function __construct(Engine $engine) {
+    $this->engine = $engine;
+  }
+}
+              </code></pre>
+              <span class="caption">Dependent class Engine is passed in as a constructor argument.</span>
+              <div class="fragment">
+                <pre><code class="php line-numbers" data-trim>
+$my_engine = new Engine();
+$my_delorean = new Car($my_engine);
+
+$flux_capacitor = new FluxCapacitor();
+$my_time_machine = new Car($flux_capacitor);
+                </code></pre>
+                <span class="caption">Engine is instatntiated seperatly and passed to Car. Can swap out engine easily.</span>
+              </div>
             </section>
           </section>
           <section>
             <section>
             <h2>Service Containers in Drupal 8</h2>
               <ul>
+                <li class="fragment">Defined in YML files (*.services.yml)</li>
                 <li class="fragment">Handles instantiating services</li>
                 <li class="fragment">Handles dependencies for services</li>
-                <li class="fragment">Defined by YML files</li>
               </ul>
             </section>
             <section>
-              <h3>Path Alias Manager Service Containter</h3>
+              <h3>Ex. Drupal 8 Core Services</h3>
               <pre><code class="line-numbers" data-trim>
-                ...
-path.alias_manager:
-  class: Drupal\Core\Path\AliasManager
-  arguments: ['@path.alias_storage', '@path.alias_whitelist',
-    '@language_manager', '@cache.data']
 ...
-              </code><span class="codename">core\core.services.yml </span></pre>
+  language_manager:
+    class: Drupal\Core\Language\LanguageManager
+    arguments: ['@language.default']
+  language.default:
+    class: Drupal\Core\Language\LanguageDefault
+    arguments: ['%language.default_values%']
+  string_translator.custom_strings:
+    class: Drupal\Core\StringTranslation\Translator\CustomStrings
+    arguments: ['@settings']
+    tags:
+      - { name: string_translator, priority: 30 }
+  string_translation:
+    class: Drupal\Core\StringTranslation\TranslationManager
+    arguments: ['@language_manager', '@state']
+    calls:
+      - [initLanguageManager]
+    tags:
+      - { name: service_collector, tag: string_translator, call: addTranslator }
+...
+              </code><span class="codename">core\core.services.yml</span></pre>
+              <span class="caption">Snippet from the Drupal8 core\core.services.yml file, which defines the service containers for all core services.</span>
             </section>
             <section>
-              <h3>Path Alias Manager Service</h3>
-              <pre><code class="php line-numbers" data-trim>
-&lt;?php
-namespace Drupal\Core\Path;
-//...
-class AliasManager ... {
-// ...
-
-  public function __construct(AliasStorageInterface $storage,
-    AliasWhitelistInterface $whitelist, LanguageManagerInterface
-    $language_manager, CacheBackendInterface $cache) {
-      $this->storage = $storage;
-      $this->languageManager = $language_manager;
-      $this->whitelist = $whitelist;
-      $this->cache = $cache;
-  }
-//...
-              </code><span class="codename">core\lib\Drupal\Core\Path\AliasManager.php </span></pre>
+              <h3>Service Definition Breakdown</h3>
+              <div class="fragment">
+                <pre><code data-trim>
+                    string_translator.custom_strings:
+                </code></pre>
+                <span class="caption">A service is defined/referenced by its "Alias Name".</span>
+              </div>
+              <div class="fragment">
+                <pre><code data-trim>
+                  class: Drupal\Core\StringTranslation\Translator\CustomStrings
+                </code></pre>
+                <span class="caption">"Class" parameter defines the location of the PHP class to use for the service.</span>
+              </div>
+              <div class="fragment">
+                <pre><code data-trim>
+                  arguments: ['@settings']
+                </code></pre>
+                <span class="caption">"Arguments" are dependencies to pass to the service constructor. '@' delimiter defines a dependent service.</span>
+              </div>
+              <div class="fragment">
+                <pre><code data-trim>
+tags:
+  - { name: string_translator, priority: 30 }
+                </code></pre>
+                <span class="caption">"Tags" to identify groups of services for compiler and other uses.</span>
+              </div>
+              <p class="fragment">
+                Full list of properties available at <a target="_blank" href="https://www.drupal.org/node/2194463">d.o/2194463</a>
+              </p>
             </section>
           </section>
           <section>
@@ -178,39 +223,40 @@ class AliasManager ... {
             </section>
             <section>
                 <h3>Services in Drupal 8</h3>
-                <ul>
-                  <li class="fragment">Database Service</li>
-                  <li class="fragment">Twig Service</li>
-                  <li class="fragment">Module Handler Service</li>
-                  <li class="fragment">Menu Service</li>
-                  <li class="fragment">...ect</li>
-                </ul>
+                <p>
+                  <ul>
+                    <li class="fragment">Decoupled, reusable & replacable global functionality.</li>
+                    <li class="fragment">Most Drupal API's are now services.
+                      <ul><li>Database, mailer, translation, etc... </li></ul>
+                    </li>
+                    <li class="fragment">Most core services can be accessed with a global static method</li>
+                  </ul>
+                </p>
                 <br />
-                <a class="fragment" href="https://api.drupal.org/api/drupal/core%21core.services.yml/8" target="_blank">core.services.yml</a>
-            </section>
-            <section>
-              <h3>Module Handler Service</h3>
-              <span class="fragment" style="font-size:50%">Drupal 7</span>
-              <pre class="fragment"><code class="php line-numbers" data-trim>
-&lt;php
-// ...
-module_invoke_all('help');
-// ...
-              </code></pre>
-              <br />
-              <span class="fragment" style="font-size:50%">Drupal 8</span>
-              <pre class="fragment"><code class="php line-numbers" data-trim>
-&lt;php
-// ...
-\Drupal::moduleHandler()->invokeAll('help');
-// ...
-              </code></pre>
+                <div class="fragment">
+                  <pre><code class="php line-numbers" data-trim>
+$connection = \Drupal::database();
+
+\Drupal::moduleHandler()->invokeAll('help'); // replaces module_invoke_all('help')
+
+\Drupal::translation()->translate('Hello world');
+                  </code></pre>
+                  <span class="caption">Examples of the database service, using the moduleHandler service (replaces the module_* functions from previous versions of Drupal) and the translation service.</span>
+                </div>
             </section>
           </section>
           <section>
             <section>
-              <h3>Alter existing services</h3>
-              <pre class="fragment"><code class="php line-numbers" data-trim>
+              <h2>Swapping Existing Services</h2>
+              <ul>
+                <li class="fragment">Modules can alter/replace exiting services</li>
+                <li class="fragment">Requires a src\*ServiceProvider.php</li>
+                <li class="fragment">Hacking core != Hacking core</li>
+              </ul>
+            </section>
+            <section>
+              <h3>Ex. Swapping with Alternate Service.</h3>
+                <pre><code class="php line-numbers" data-trim>
 &lt;?php
 
 namespace Drupal\my_module;
@@ -221,19 +267,19 @@ use Drupal\Core\DependencyInjection\ServiceProviderBase;
 class MyModuleServiceProvider extends ServiceProviderBase {
 
   public function alter(ContainerBuilder $container) {
-    // Overrides language_manager class to test
-    // domain language negotiation.
+    // Overrides language_manager class to test domain language negotiation.
     $definition = $container->getDefinition('language_manager');
     $definition->setClass('Drupal\language_test\LanguageTestManager');
   }
 }
 ?>
-              </code><span class="codename">MyModule\src\MyModuleServiceProvider.php </span></pre>
-              <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
+                </code><span class="codename">my_module\src\MyModuleServiceProvider.php </span></pre>
+                <span class="caption">Example of replacing the language manager service to use a test one.</span><br />
+                <a href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
             </section>
             <section>
-              <h3>Replace existing services</h3>
-              <pre class="fragment"><code class="php line-numbers" data-trim>
+              <h3>Ex. Swapping with Custom Services</h3>
+                <pre><code class="php line-numbers" data-trim>
 &lt;?php
 
 namespace Drupal\my_module;
@@ -244,18 +290,61 @@ use Drupal\Core\DependencyInjection\ServiceProviderBase;
 class MyModuleServiceProvider extends ServiceProviderBase {
 
   public function alter(ContainerBuilder $container) {
-    // Overrides language_manager class to test
-    // domain language negotiation.
-    $definition = $container->getDefinition('language_manager');
-    $definition->setClass('Drupal\my_module\MyLanguageManager');
+    // Overrides language_manager class to test domain language negotiation.
+    $definition = $container->getDefinition('string_translation');
+    $definition->setClass('Drupal\mymodule\src\MyTranslationManager');
   }
 }
 ?>
-              </code><span class="codename">my_module\src\MyModuleServicePorvider.php /span></pre>
-              <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
+                </code><span class="codename">my_module\src\MyModuleServiceProvider.php </span></pre>
+                <span class="caption">Example of replacing the translation manager service with a custom one.</span>
             </section>
             <section>
-              <h3>Create New Services</h3>
+                <h3>Ex. Altering Core Service with Custom</h3>
+                <pre><code class="php line-numbers" data-trim>
+&lt;?php
+
+namespace Drupal\MyModule\MyTranslationManager;
+
+use Drupal\Core\StringTranslation\TranslatorManager;
+
+/**
+ * Defines a chained translation implementation combining multiple translators.
+ */
+class MyTranslationManager extends TranslationManager {
+  /**
+   * override getStringTranslation();
+   */
+  public function getStringTranslation($langcode, $string, $context) {
+    // Retrieve translation from a remote source.
+    if ($remote = $this->getRemoteTranslation($langcode, $string)) {
+      return $remote;
+    }
+    else {
+      return parent::getStringTranslation($langcode, $string, $context);
+  }
+  // ..
+}
+                </code><span class="codename">my_module\src\MyModuleMyTranslationManager.php </span></pre>
+                <span class="caption">Ability to override a core function with a custom one, using a custom service that extends the core service.</span>
+            </section>
+          </section>
+          <section>
+            <section>
+              <h2>Creating New Services</h2>
+              <ul>
+                <li class="fragment">Extend abilities of Drupal</li>
+                <li class="fragment">Release as module</li>
+                <li class="fragment">Require:
+                  <ul>
+                    <li> *.services.yml</li>
+                    <li>Class files...</li>
+                  </ul>
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3>Ex. New Service</h3>
               <pre><code class="line-numbers" data-trim>
 services:
     mymodule.car_service:
@@ -265,11 +354,16 @@ services:
         class: Drupal\my_module\Engine
 ...
               </code><span class="codename">my_module\my_module.services.yml </span></pre>
-              <pre class="fragment"><code class="php line-numbers" data-trim>
+              <span class="caption">Define new services for Car and Engine. Car depends on Engine.</span>
+              <div class="fragment">
+                <pre><code class="php line-numbers" data-trim>
 &lt;?php
 // ...
-$service = \Drupal::service('mymodule.car_service');
-</code></pre>
+$my_drupal_delorean = \Drupal::service('mymodule.car_service');
+$my_drupal_delorean->setMeasure('mph')->setSpeed(88);
+                </code></pre>
+                <span class="caption">Call car service using the global service container.</span>
+              </div>
             </section>
           </section>
 			</div>
