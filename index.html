@@ -15,10 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="css/theme/basic.css" id="theme">
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/code.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -143,7 +144,7 @@ path.alias_manager:
   arguments: ['@path.alias_storage', '@path.alias_whitelist',
     '@language_manager', '@cache.data']
 ...
-              </code><span class="filename">core\core.services.yml</span></pre>
+              </code><span class="codename">core\core.services.yml </span></pre>
             </section>
             <section>
               <h3>Path Alias Manager Service</h3>
@@ -163,7 +164,7 @@ class AliasManager ... {
       $this->cache = $cache;
   }
 //...
-              </code><span class="filename">core\lib\Drupal\Core\Path\AliasManager.php</span></pre>
+              </code><span class="codename">core\lib\Drupal\Core\Path\AliasManager.php </span></pre>
             </section>
           </section>
           <section>
@@ -227,7 +228,7 @@ class MyModuleServiceProvider extends ServiceProviderBase {
   }
 }
 ?>
-              </code><span class="filename">MyModule\src\MyModuleServiceProvider.php</span></pre>
+              </code><span class="codename">MyModule\src\MyModuleServiceProvider.php </span></pre>
               <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
             </section>
             <section>
@@ -250,7 +251,7 @@ class MyModuleServiceProvider extends ServiceProviderBase {
   }
 }
 ?>
-              </code><span class="filename">my_module\src\MyModuleServicePorvider.php</span></pre>
+              </code><span class="codename">my_module\src\MyModuleServicePorvider.php /span></pre>
               <a class="fragment" href="https://www.drupal.org/node/2026959" target="_blank">d.o/node/2026959</a>
             </section>
             <section>
@@ -263,23 +264,13 @@ services:
     mymodule.engine_service:
         class: Drupal\my_module\Engine
 ...
-              </code><span class="filename">my_module\my_module.services.yml</span></pre>
+              </code><span class="codename">my_module\my_module.services.yml </span></pre>
               <pre class="fragment"><code class="php line-numbers" data-trim>
 &lt;?php
 // ...
 $service = \Drupal::service('mymodule.car_service');
 </code></pre>
             </section>
-          </section>
-          <section data-background="#15a8f3">
-              <h2>November Drupal Meetup</h2>
-              <p class="fragment"><strong>When:</strong>Tuesday November 3rd, 2015</p>
-              <p class="fragment">
-                <img style="border:0;width:600px;box-shadow:0;background:0;" data-src="images/genuine_logo_white.png" />
-                <br />
-                <strong>Where:</strong> 500 Harrison 5R Ave Boston MA 02118
-              </p>
-              </p>
           </section>
 			</div>
 		</div>
