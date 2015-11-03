@@ -215,6 +215,10 @@ body {
   -moz-transition: all 0.15s linear;
   transition: all 0.15s linear; }
 
+.screenshot {
+  max-width: 600px !important;
+}
+
 /*********************************************
  * PROGRESS BAR
  *********************************************/

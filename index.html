@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Presentation Title</title>
+		<title>Twig Breakpoints</title>
 
 		<meta name="description" content="Presentation Title">
 		<meta name="author" content="Mike Miles">
@@ -42,15 +42,15 @@
       <div class="footer">
         <div class="branding--logo">
             <span class="logo__image"><img src="lib/image/content/logo.png" alt="Conference logo" height="55px" /></span>
-            <p class="logo__site-name">#conference</p>
+            <p class="logo__site-name">#drupal8twig</p>
         </div>
         <div class="company--logo">
-            <span class="logo__image"><img src="/images/genuine_logo_white.png" alt="Genuine" height="40px" width="40px" /></span>
+            <span class="logo__image"><img src="/images/genuine_logo_color.png" alt="Genuine" height="40px" width="40px" /></span>
             <p class="logo__site-name">@WeAreGenuine</p>
         </div>
         <div class="session--info">
             <p class="session__title">
-              Presentation Title<span class="seperator">&nbsp;/&nbsp;</span>
+              Twig Breakpoints<span class="seperator">&nbsp;/&nbsp;</span>
             </p>
             <p class="session__presenter">Michael Miles</p>
         </div>
@@ -59,20 +59,64 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
         <section>
-          <h1>Presentation Title</h1>
-          <h2>Presentation Subtitle</h2>
-          <h3><a href="" target="_blank">presentation conf link</a></h3>
-          <h3>conference</h3>
-          <h3>#conference</h3>
+          <h1>Give me a Break</h1>
+          <h2>Debugging Twig Templates</h2>
+          <h3><a href="http://www.twitter.com/mikemiles86">@mikemiles86</a></h3>
         </section>
         <section>
-          <h1>Feedback</h1>
-          <h3><a href="http://www.twitter.com/mikemiles86">@mikemiles86</a></h3>
-          <h3>#conference</h3>
+          <section>
+            <h2>Pre Drupal 8</h2>
+            <ul>
+              <li class="fragment">PHPTemplate theme engine</li>
+              <li class="fragment">PHP in template (.tpl.php) files</li>
+              <li class="fragment">Not secure, easy to debug</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Debugging PHPEngine Template</h2>
+            <pre class="fragment"><code class="php" data-trim>&lt;?php print_r($my_variable); ?></code></pre>
+            <pre class="fragment"><code class="php" data-trim>&lt;?php var_dump($my_variable); ?></code></pre>
+            <pre class="fragment"><code class="php" data-trim>&lt;?php dpm($my_variable); ?></code></pre>
+          </section>
+          <section>
+            <h2>Problem!</h2>
+            <p class="fragment" style="color:#000">Have to add additional debugging code.</p>
+          </section>
+          <section>
+            <h2>Solution: Xdebug</h2>
+            <ul>
+              <li class="fragment">Debugger & Profiler tool for PHP</li>
+              <li class="fragment">Plugin for many IDEs (PHPStorm, Sublime Text, eclipse, etc...)</li>
+              <li class="fragment">Can use breakpoints instead of code to debug</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Xdebug Breakpoint in PHPStorm</h2>
+            <img data-src="images/xdebug_breakpoint.png" class="screenshot" />
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Drupal 8 and Beyond</h2>
+            <ul>
+              <li class="fragment">Twig Template theme engine</li>
+              <li class="fragment">No PHP allowed in template (.html.twig) files.</li>
+              <li class="fragment">More secure then PHPTemplate</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Debugging Twig Template</h2>
+            <pre class="fragment"><code class="twig">{{ dump(my_variable) }}</code></pre>
+            <pre class="fragment"><code class="twig">{{ kint(my_variable) }}</code></pre>
+            <pre class="fragment" style="background: #3F3F3F;color: #DCDCDC;font-size: 90%;"><a href="http://aj.garcialagar.es/blog/how-to-set-breakpoints-in-twig/" target="_blank">Create a Twig Extension</a></pre>
+          </section>
+          <section>
+            <h3>What I have learned and hate about Drupal 8...</h3>
+            <p class="fragment" style="color:#000">No way to debug Twig templates without adding additional code.</p>
+          </section>
         </section>
         <section>
           <h1>Thank You!</h1>
-          <p>Questions?</p>
         </section>
 			</div>
 
