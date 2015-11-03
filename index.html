@@ -69,7 +69,7 @@
             <ul>
               <li class="fragment">PHPTemplate theme engine</li>
               <li class="fragment">PHP in template (.tpl.php) files</li>
-              <li class="fragment">Not secure, easy to debug</li>
+              <li class="fragment">Not secure but easy to debug</li>
             </ul>
           </section>
           <section>
@@ -80,7 +80,8 @@
           </section>
           <section>
             <h2>Problem!</h2>
-            <p class="fragment" style="color:#000">Have to add additional debugging code.</p>
+            <p class="fragment" style="color:#000">Have to add additional code for debugging.</p>
+            <p class="fragment" style="color:#000">Developers are forgetful.</p>
           </section>
           <section>
             <h2>Solution: Xdebug</h2>
@@ -101,14 +102,27 @@
             <ul>
               <li class="fragment">Twig Template theme engine</li>
               <li class="fragment">No PHP allowed in template (.html.twig) files.</li>
-              <li class="fragment">More secure then PHPTemplate</li>
+              <li class="fragment">More secure, easy to debug</li>
             </ul>
           </section>
           <section>
             <h2>Debugging Twig Template</h2>
             <pre class="fragment"><code class="twig">{{ dump(my_variable) }}</code></pre>
             <pre class="fragment"><code class="twig">{{ kint(my_variable) }}</code></pre>
-            <pre class="fragment" style="background: #3F3F3F;color: #DCDCDC;font-size: 90%;"><a href="http://aj.garcialagar.es/blog/how-to-set-breakpoints-in-twig/" target="_blank">Create a Twig Extension</a></pre>
+            <pre class="fragment"><code class="twig">???</code></pre>
+          </section>
+          <section>
+            <h2>Same Problem!</h2>
+            <p style="color:#000">Have to add additional code for debugging.</p>
+            <p style="color:#000">Developers are forgetful.</p>
+          </section>
+          <section>
+            <h2>Breakpoints?</h2>
+            <ul>
+              <li class="fragment">No support for breakpoints in twig</li>
+              <li class="fragment">Can <a href="http://aj.garcialagar.es/blog/how-to-set-breakpoints-in-twig/" target="_blank">create a Twig Extension</a></li>
+              <li class="fragment">Still requires additional code</li>
+            </ul>
           </section>
           <section>
             <h3>What I have learned and hate about Drupal 8...</h3>
@@ -116,7 +130,8 @@
           </section>
         </section>
         <section>
-          <h1>Thank You!</h1>
+          <h2>Totally Worth It</h2>
+          <p class="fragment" style="color:#000">Security & Performance <strong>></strong> Lazyness</p>
         </section>
 			</div>
 
