@@ -206,9 +206,7 @@ body {
 /*********************************************
  * IMAGES
  *********************************************/
-.reveal section img {
-  margin: 15px 0px;
-  border: 4px solid; }
+
 
 .reveal a img {
   -webkit-transition: all 0.15s linear;
