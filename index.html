@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Drupal 8 vs. Wordpress 4</title>
+		<title>Drupal 8 Quick Dev Setup</title>
 
-		<meta name="description" content="Drupal 8 vs. Wordpress 4">
+		<meta name="description" content="Drupal 8 quick development setup tips for sprinting.">
 		<meta name="author" content="Mike Miles">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -48,7 +48,7 @@
         </div>
         <div class="session--info">
             <p class="session__title">
-              D8 vs. W4<span class="seperator">&nbsp;/&nbsp;</span>
+              D8 dev setup<span class="seperator">&nbsp;/&nbsp;</span>
             </p>
             <p class="session__presenter">Michael Miles</p>
         </div>
@@ -56,80 +56,116 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-        <section data-background="images/eightvsw.png">
-          <h1>Drupal 8 vs. Wordpress 4</h1>
-          <br /><br /><br />
-          <h3><a href="http://www.twitter.com/mikemiles86">@mikemiles86</a></h3>
+        <section >
+          <section>
+            <h1>Drupal Dev Setup</h1>
+            <br /><strong>Quick environment tips for sprinting.</strong><br /><br />
+            <h3><a href="http://www.twitter.com/mikemiles86">@mikemiles86</a></h3>
+          </section>
+          <section>
+            <h2>Prerequisites</h2>
+            <ul>
+              <li class="fragment">Assumed PHP (5.5) installed.</li>
+              <li class="fragment">Assumed MySQL (5.5.3)/MariaDB 5.5.20 installed.</li>
+              <li class="fragment">Assumed have Drupal 8 codebase.</li>
+            </ul>
+          </section>
         </section>
         <section>
           <section>
-            <h2>Comparing the Two</h2>
-            <table border="0" style="font-size:80%;border:0;width:100%" cellpadding="0" cellspacing="0">
-              <tr class="fragment">
-                <td>Flexibility</td>
-                <td><img data-src="images/drupal_icon.png" /></td>
-                <td></td>
-              </tr>
-              <tr class="fragment">
-                <td>Workflow</td>
-                <td></td>
-                <td><img data-src="images/wordpress_icon.png"  /></td>
-              </tr>
-              <tr class="fragment">
-                <td>Translation</td>
-                <td><img data-src="images/drupal_icon.png"  /></td>
-                <td></td>
-              </tr>
-              <tr class="fragment">
-                <td>Page Loading</td>
-                <td><img data-src="images/drupal_icon.png"  /></td>
-                <td></td>
-              </tr>
-              <tr class="fragment">
-                <td>Updates</td>
-                <td></td>
-                <td><img data-src="images/wordpress_icon.png"  /></td>
-              </tr>
-              <tr class="fragment">
-                <td>Security</td>
-                <td><img data-src="images/drupal_icon.png" /></td>
-                <td></td>
-              </tr>
-              <tr class="fragment">
-                <td>Ease of Use</td>
-                <td></td>
-                <td><img data-src="images/wordpress_icon.png" /></td>
-              </tr>
-              <tr class="fragment">
-                <td>Theming</td>
-                <td></td>
-                <td><img data-src="images/wordpress_icon.png" /></td>
-              </tr>
-              <tr class="fragment">
-                <td>Mobile Support</td>
-                <td><img data-src="images/drupal_icon.png" /></td>
-                <td><img data-src="images/wordpress_icon.png" /></td>
-              </tr>
-            </table>
+            <h2>Tip #1: Use the PHP built in web server</h2>
+            <p class="fragment">Do not waste time setting up aliases!</p>
+            <pre class="fragment"><code class="bash" data-trim>$ php -S &lt;addr>:&lt;port></code></pre>
           </section>
           <section>
-            <h2>Which is Better?</h2>
-            <p style="font-size:60%" class="fragment"><em>(This is where you expect me to say Drupal)</em></p>
-            <br />
-            <p class="fragment">But....</p>
-            <p class="fragment">What do you mean by "better"?</p>
-          </section>
-          <section>
-            <h2>It Depends</h2>
-            <ul>
-              <li class="fragment">What type of project is it?</li>
-              <li class="fragment">Who is building the site? skillset?</li>
-              <li class="fragment">Who will be using the site day to day?</li>
-            </ul>
-            <p class="fragment">All depends on the use case.</p>
+            <h3>Example</h3>
+            <img class="animated-gif screenshot" data-src="images/php_web_server.gif" />
           </section>
         </section>
-        <section data-background="images/friendship.gif">
+        <section>
+          <section>
+            <h2>Tip #2: Enable Development Services</h2>
+            <ul>
+              <li class="fragment">Allow overriding services and parameters
+                <ul>
+                  <li>Turn off caching, Twig Debugging, etc...</li>
+                </ul>
+              </li>
+            </ul>
+            <p class="fragment"><u>Two steps</u></p>
+            <ul>
+              <li class="fragment">Copy sites/example.settings.local.php
+                <ul>
+                  <li>Save as sites/[yoursite]/settings.local.php</li>
+                </ul>
+              </li>
+              <li class="fragment">Create sites/development.services.yml</li>
+            </ul>
+          </section>
+          <section>
+            <h3>settings.local.php</h3>
+            <pre><code class="php line-numbers" data-trim>
+&lt;?php
+//...
+/**
+ * Enable local development services.
+ */
+$settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+
+/**
+ * Show all error messages, with backtrace information.
+ *
+ * In case the error level could not be fetched from the database, as for
+ * example the database connection failed, we rely only on this value.
+ */
+$config['system.logging']['error_level'] = 'verbose';
+
+/**
+ * Disable CSS and JS aggregation.
+ */
+$config['system.performance']['css']['preprocess'] = FALSE;
+$config['system.performance']['js']['preprocess'] = FALSE;
+//...
+            </code></pre>
+          </section>
+          <section>
+            <h3>development.services.yml</h3>
+            <pre><code class="yml line-numbers" data-trim>
+# Local development services.
+#
+# To activate this feature, follow the instructions at the top of the
+# 'example.settings.local.php' file, which sits next to this file.
+services:
+  cache.backend.null:
+    class: Drupal\Core\Cache\NullBackendFactory
+
+parameters:
+  twig.config:
+    debug: true
+            </code></pre>
+          </section>
+          <section>
+            <h3>Example</h3>
+            <img data-src="images/twig-debug.png" class="screenshot" />
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Tip #3: Use Web profiler</h2>
+            <p class="fragment">Learn everything that is going on with a "page".</p>
+            <ul>
+              <li class="fragment">Download and install the devel module.
+                <ul>
+                  <li>https://www.drupal.org/project/devel</li>
+                </ul>
+              </li>
+              <li class="fragment">Enable WebProfiler</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Example</h3>
+            <img data-src="images/web-profiler.gif" class="animated-gif" />
+          </section>
         </section>
 			</div>
 

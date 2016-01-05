@@ -31,11 +31,9 @@
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
+
 body {
-  background-size: 100%;
-  background-image: url('../../images/background.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url('../../images/background_pattern.jpg');
 }
 
 .reveal {
