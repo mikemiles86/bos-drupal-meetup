@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Update core: 3 methods</title>
+		<title>Incorrectly Named API file</title>
 
-		<meta name="description" content="Three methods for updating Drupal Core">
+		<meta name="description" content="Incorrectly Named API file">
 		<meta name="author" content="Mike Miles">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,7 +49,7 @@
         </div>
         <div class="session--info">
             <p class="session__title">
-              Update Core<span class="seperator">&nbsp;/&nbsp;</span>
+              API File naming<span class="seperator">&nbsp;/&nbsp;</span>
             </p>
             <p class="session__presenter">Michael Miles</p>
         </div>
@@ -59,168 +59,63 @@
 			<div class="slides">
         <section>
           <section>
-            <h1>Updating Drupal Core</h1>
-            <h2>3 Different Methods</h2>
-            <h3>Boston Drupal Meetup, April 5th</h3>
+            <h1>It's .inc, not .php</h1>
+            <h2>Naming a file incorrectly (repeatedly)</h2>
+            <h3>Boston Drupal Meetup, May 3rd</h3>
+          </section>
+        </section>
+        <section data-transition>
+          <section>
+            <h2>The Mistake</h2>
           </section>
           <section data-transition="convex">
-            <h2>The Methods</h2>
-            <ul>
-              <li class="fragment">Manual Method</li>
-              <li class="fragment">Drush Method</li>
-              <li class="fragment">Composer Method</li>
-            </ul>
+            <img data-src="images/workbench_scheduler.png" class="screenshot" />
           </section>
           <section data-transition="convex">
-            <h2>For Drupal 7 or Drupal 8?</h2>
-            <p class="fragment">Yes!</p>
+            <img data-src="images/api_issue.png" class="screenshot" />
+          </section>
+          <section data-transition="convex">
+            <img data-src="images/api_guidelines.png" class="screenshot" />
+            <a href="//www.drupal.org/node/161085#api_php" target="_blank">drupal.org/node/161085#api_php</a>
+          </section>
+          <section data-transition="convex">
+            <h3>Must have been a one time thing...</h3>
+          </section>
+          <section data-transition="convex">
+            <img data-src="images/bazaarvoice_api.png" class="screenshot" />
+          </section>
+          <section data-transition="convex">
+            <img data-src="images/yelp_api.png" class="screenshot" />
+          </section>
+          <section data-transition="convex">
+            <h3>Nope, not a one time thing</h3>
+          </section>
+          <section data-transition="convex">
+            <img data-src="images/fool.png" class="Screenshot" />
+          </section>
+        </section>
+        <section data-transition>
+          <section>
+            <h2>The Solution</h2>
+          </section>
+          <section data-transition="convex">
+            <p>Change .inc to .php</p>
+          </section>
+          <section data-transition="convex">
+            <img data-src="images/fix_commit.png" class="screenshot" />
           </section>
         </section>
         <section>
           <section>
-            <h2>The "Manual" Method</h2>
-            <ul>
-              <li class="fragment">Manually downloading and replacing files</li>
-              <li class="fragment">Time and energy intensive</li>
-              <li class="fragment">Subject to human error</li>
-            </ul>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_manual_01_enable_update.png" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">1. Get Updates</h3>
-          </section>
-          <section data-transition="fade" data-background-image="images/d7_manual_02_cron_update_message.png" data-background-position="top">
-          </section>
-          <section data-transition="fade" data-background-image="images/d7_manual_03_check_update.png" data-background-position="top">
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_manual_03_download.png" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">2. Download Files</h3>
-          </section>
-           <section data-transition="convex" data-background-transition="convex" data-background-image="images/d7_07_manual_update_maintance_mode.png" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">3. Put into Maintenance Mode!</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_manual_05_replace_files.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">4. Replace Core files</h3>
-          </section>
-          <section data-transition="convex" data-background-transition="convex" data-background-image="images/d7_manual_06_run_updates.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">5. Run Updates</h3>
-          </section>
-           <section data-transition="convex" data-background-transition="convex" data-background-image="images/d7_07_manual_update_maintance_mode.png" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">6. Take out of Maintenance Mode</h3>
-          </section>
-           <section data-transition="convex" data-background-transition="convex" data-background-image="images/d7_manual_06_run_updates.png" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">Finished</h3>
-          </section>
-        </section>
-        <section>
-          <section>
-            <h2>The "Drush" Method</h2>
-            <ul>
-              <li class="fragment">Command line all the things!</li>
-              <li class="fragment">No human handling of files</li>
-              <li class="fragment">Cannot deselect files</li>
-            </ul>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_01_check_updates.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">1. Check for Updates</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_01_update_status.png" data-background-position="top">
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_02_update_code.gif" data-background-position="bottom">
-            <h3 class="fragment fade-out" style="background:#000;">2. Get Updates</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_02_update_code.png" data-background-position="bottom">
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_04_main_on.gif" data-background-position="bottom">
-            <h3 class="fragment fade-out" style="background:#000;">3. Put into Maintenance Mode!</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_03_update_db.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">4. Run Updates</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_05_main_off.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">5. Take out of Maintenance Mode</h3>
-          </section>
-           <section data-transition="convex" data-background-transition="convex" data-background-image="images/d7_drush_complete.png" data-background-position="left">
-            <h3 class="fragment fade-out" style="background:#000;">Finished</h3>
-          </section>
-        </section>
-        <section>
-          <section>
-            <h2>The "Composer" Method</h2>
-            <ul>
-              <li class="fragment">Some setup is required</li>
-              <li class="fragment">No touching of the files</li>
-              <li class="fragment">Protection of modified files</li>
-            </ul>
+            <h2>The Lesson</h2>
           </section>
           <section data-transition="convex">
-            <h3>1. Create Composer file</h3>
-            <pre><code class="json line-numbers" data-trim data-lines-highlight="10">
-{
-  "name": "drupal-composer/drupal-project",
-  "description": "Composer template for Drupal 7 projects",
-  "repositories": [{
-    "type": "composer",
-    "url": "https://packagist.drupal-composer.org"
-  }],
-  "require": {
-    "composer/installers": "~1.0",
-    "drupal/drupal": "7.*"
-  },
-  "config": {
-    "vendor-dir": "vendor"
-  },
-  "extra": {
-    "installer-paths": {
-      "web/": ["type:drupal-core"]
-    }
-  }
-}
-            </code><span class="codename">composer.json</span></pre>
-            <a href="https://github.com/drupal-composer/drupal-project">github.com/drupal-composer/drupal-project</a>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_04_main_on.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">2. Put into Maintenance Mode!</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_composer_01_composer_up.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">3. Run Composer update</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_composer_01_composer_up.png" data-background-position="top">
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_03_update_db.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">4. Run Updates</h3>
-          </section>
-          <section data-transition="convex" data-background-image="images/d7_drush_05_main_off.gif" data-background-position="top">
-            <h3 class="fragment fade-out" style="background:#000;">5. Take out of Maintenance Mode</h3>
-          </section>
-          <section data-transition="convex">
-            <h3>Finished</h3>
-            <pre><code class="json line-numbers" data-trim>
-     {
-  "name": "drupal/drupal",
-  "version": "7.43.0",
-  "source": {
-      "type": "git",
-      "url": "https://git.drupal.org/project/drupal",
-      "reference": "c136d1347b9b92145590cb1f84cc02a695d721fe"
-  },
-  "dist": {
-      "type": "zip",
-      "url": "https://ftp.drupal.org/files/projects/drupal-7.43.zip",
-      "reference": null,
-      "shasum": null
-  },
-            </code><span class="codename">composer.lock</span></pre>
+            <p class="fragment">Always double check development standards</p>
+            <p class="fragment">Be a good maintainer</p>
           </section>
         </section>
         <section>
-          <h1>Feedback</h1>
-          <h3><a href="http://www.twitter.com/mikemiles86">@mikemiles86</a></h3>
-          <h3>#inventtogether</h3>
-        </section>
-        <section>
-          <h1>Thank You!</h1>
-          <p>Questions?</p>
-        </section>
+          <h2>Fin.</h2>
 			</div>
 
 		</div>
