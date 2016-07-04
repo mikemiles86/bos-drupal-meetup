@@ -17,5 +17,5 @@ The Main organizers of the Boston Drupal Meetup are:
 - Moshe Weitzman (@weitzman)
 
 ## Join Us
-- [groups.drupal.org/boston](https://groups.boston.org/boston)
+- [groups.drupal.org/boston](https://groups.drupal.org/boston)
 - [meetup.com] (http://www.meetup.com/Boston-Drupal-Group/)
