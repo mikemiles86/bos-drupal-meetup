@@ -2,6 +2,22 @@
 
 This repository keeps track of the presentations used to guide the monthly meeting for the Boston Drupal Meetup
 
+## About this Branch
+
+This branch holds the presentation for the Month-YYYY meetup.
+
+### Topics
+
+The lightning talk topics for this month were:
+
+### Attendence:
+
+This month there were XX members in attendence
+
+### Speakers
+
+This month there were XX speakers
+
 # About the Boston Drupal Meetup Group
 
 This group is for anyone in the Boston or greater Massachusetts area who has an interest in Drupal. Our goal is to grow and maintain a positive and supportive Drupal environment. Sharing knowledge and experiences, promoting new ideas and opportunities, fostering communication and community.
