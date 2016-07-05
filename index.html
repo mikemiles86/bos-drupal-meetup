@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Incorrectly Named API file</title>
+		<title>When to use Blocks</title>
 
 		<meta name="description" content="Incorrectly Named API file">
 		<meta name="author" content="Mike Miles">
@@ -15,8 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/miles.css" id="theme">
-    <link rel="stylesheet" href="css/miles-color.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -39,85 +38,33 @@
 	<body>
 
 		<div class="reveal">
-      <div class="footer">
-        <div class="branding--logo">
-            <p class="logo__site-name">#inventtogether</p>
-        </div>
-        <div class="company--logo">
-            <span class="logo__image"><img src="/images/genuine_logo_white.png" alt="Genuine" height="40px" width="40px" /></span>
-            <p class="logo__site-name">@WeAreGenuine</p>
-        </div>
-        <div class="session--info">
-            <p class="session__title">
-              API File naming<span class="seperator">&nbsp;/&nbsp;</span>
-            </p>
-            <p class="session__presenter">Michael Miles</p>
-        </div>
-    </div>
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
         <section>
-          <section>
-            <h1>It's .inc, not .php</h1>
-            <h2>Naming a file incorrectly (repeatedly)</h2>
-            <h3>Boston Drupal Meetup, May 3rd</h3>
-          </section>
+          <h1>How to Create Block Entities in Drupal 8</h1>
         </section>
-        <section data-transition>
-          <section>
-            <h2>The Mistake</h2>
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/workbench_scheduler.png" class="screenshot" />
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/api_issue.png" class="screenshot" />
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/api_guidelines.png" class="screenshot" />
-            <a href="//www.drupal.org/node/161085#api_php" target="_blank">drupal.org/node/161085#api_php</a>
-          </section>
-          <section data-transition="convex">
-            <h3>Must have been a one time thing...</h3>
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/bazaarvoice_api.png" class="screenshot" />
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/yelp_api.png" class="screenshot" />
-          </section>
-          <section data-transition="convex">
-            <h3>Nope, not a one time thing</h3>
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/fool.png" class="Screenshot" />
-          </section>
+        <section data-transition="convex" data-background-image="http://quotesblog.net/wp-content/uploads/2015/05/iVIK1Mt0qWs5g.gif">
+          <h2 style="display:inline-block;background:rgba(0,0,0,.7)">Blocks are full on Entities in Drupal 8!</h2>
         </section>
-        <section data-transition>
-          <section>
-            <h2>The Solution</h2>
-          </section>
-          <section data-transition="convex">
-            <p>Change .inc to .php</p>
-          </section>
-          <section data-transition="convex">
-            <img data-src="images/fix_commit.png" class="screenshot" />
-          </section>
+        <section data-transition="convex" data-background-image="http://vignette3.wikia.nocookie.net/adventuretimewithfinnandjake/images/f/ff/MY_BEANS!!!.gif/revision/latest?cb=20130518195932">
+          <strong><em>Sorry Beans</em></strong>
         </section>
-        <section>
-          <section>
-            <h2>The Lesson</h2>
-          </section>
-          <section data-transition="convex">
-            <p class="fragment">Always double check development standards</p>
-            <p class="fragment">Be a good maintainer</p>
-          </section>
+        <section data-transition="convex">
+          <h2>Creating a new Block Type</h2>
+          <ol>
+            <li class="fragment">Go to admin/structure/block/block-content/types</li>
+            <li class="fragment">Create a type & give it fields</li>
+            <li class="fragment">? Profit ?</li>
+          </ol>
         </section>
-        <section>
-          <h2>Fin.</h2>
+        <section data-transition="convex" data-background-image="http://rs144.pbsrc.com/albums/r189/skateflip1717/flashing_colors.gif~c200">
+          <h2 style="display:inline-block;background:rgba(0,0,0,.7)">Demo time!</h2>
+        </section>
+        <section data-transition="fade" >
+          <h2>Demo time!</h2>
+        </section>
 			</div>
-
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
